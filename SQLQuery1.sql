@@ -109,3 +109,41 @@ SELECT *, (RollingPeopleVaccinated/population)*100
 FROM PopVsVac
 
 
+-- Also for next step (visualization) we need to use Temp table method
+DROP Table if exists #PercentPopulationVaccinated
+Create Table #PercentPopulationVaccinated
+(
+Continent nvarchar(255),
+Location nvarchar(255),
+Date datetime,
+Population numeric,
+New_vaccinations numeric,
+RollingPeopleVaccinated numeric
+)
+
+Insert into #PercentPopulationVaccinated
+Select dae.continent, dae.location, dae.date, dae.population, vac.new_vaccinations
+, SUM(CAST(vac.new_vaccinations as BIGINT)) OVER (Partition by dae.Location Order by dae.location, dae.Date) as RollingPeopleVaccinated
+--, (RollingPeopleVaccinated/population)*100
+From Covid19..CovidDeath dae
+Join Covid19..CovidVaccinations vac
+	On dae.location = vac.location
+	and dae.date = vac.date
+--where dea.continent is not null 
+--order by 2,3
+
+Select *, (RollingPeopleVaccinated/Population)*100
+From #PercentPopulationVaccinated
+
+
+-- Creating View to store data for later visualizations
+
+CREATE VIEW PercentPopulationVaccinated AS
+Select dae.continent, dae.location, dae.date, dae.population, vac.new_vaccinations
+, SUM(CAST(vac.new_vaccinations as BIGINT)) OVER (Partition by dae.Location Order by dae.location, dae.Date) as RollingPeopleVaccinated
+From Covid19..CovidDeath dae
+Join Covid19..CovidVaccinations vac
+	On dae.location = vac.location
+	and dae.date = vac.date
+where dae.continent is not null 
+--order by 2,3
