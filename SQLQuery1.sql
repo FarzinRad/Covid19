@@ -37,3 +37,18 @@ FROM Covid19..CovidDeath
 WHERE continent is not null
 GROUP BY location, population
 ORDER BY 4 DESC
+
+-- Continent with the most Highest death
+SELECT location, MAX(CAST(total_deaths AS int)) AS ContinentDeath
+FROM Covid19..CovidDeath
+WHERE continent is null
+GROUP BY location
+ORDER BY ContinentDeath DESC
+
+-- Relation Between New Cases and New death
+Select SUM(new_cases) as total_cases, SUM(cast(new_deaths as int)) as total_deaths, SUM(cast(new_deaths as int))/SUM(New_Cases)*100 as DeathPercentage
+From Covid19..CovidDeath
+--Where location like '%states%'
+where continent is not null 
+--Group By date
+order by 1,2
