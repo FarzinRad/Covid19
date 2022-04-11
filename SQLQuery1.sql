@@ -17,3 +17,16 @@ SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100
 FROM Covid19..CovidDeath
 WHERE location LIKE 'Turkey'
 ORDER BY 1,2
+
+
+-- Compare total cases VS Population
+SELECT location, date, total_cases, population, (total_cases/population)*100 AS patients_precentage
+FROM Covid19..CovidDeath
+WHERE location LIKE '%states%'
+ORDER BY 1,2
+
+-- Countries with the highest infection rate compared to population
+SELECT location, population, MAX(total_cases) AS HighestInfectionCount,  MAX((total_cases/population))*100 AS PrecentagePopulationInfected
+FROM Covid19..CovidDeath
+GROUP BY location, population
+ORDER BY 4 DESC
