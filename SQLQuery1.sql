@@ -52,3 +52,11 @@ From Covid19..CovidDeath
 where continent is not null 
 --Group By date
 order by 1,2
+
+
+-- Check the Vaccination data
+SELECT *
+FROM Covid19..CovidVaccinations
+
+-- Total Population vs Vaccinations
+-- Shows Percentage of Population that has recieved at least one Covid Vaccine
