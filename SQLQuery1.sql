@@ -75,3 +75,17 @@ JOIN Covid19..CovidVaccinations vac
 	AND dae.date = vac.date
 WHERE dae.continent is not null
 ORDER BY 2,3
+
+
+
+-- Oder by location and date and sum day to day of vaccination.
+Select dae.continent, dae.location, dae.date, dae.population, vac.new_vaccinations
+, SUM(CONVERT(int,vac.new_vaccinations)) OVER (Partition by dae.Location Order by dae.location, dae.Date) as RollingPeopleVaccinated
+--, (RollingPeopleVaccinated/population)*100
+From Covid19..CovidDeath dae
+Join Covid19..CovidVaccinations vac
+	On dae.location = vac.location
+	and dae.date = vac.date
+where dae.continent is not null 
+order by 2,3
+
