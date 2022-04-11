@@ -58,5 +58,20 @@ order by 1,2
 SELECT *
 FROM Covid19..CovidVaccinations
 
+-- Joining the vaccination data with death data
+SELECT *
+FROM Covid19..CovidDeath dae
+JOIN Covid19..CovidVaccinations vac
+	ON dae.location = vac.location
+	AND dae.date = vac.date
+
+
 -- Total Population vs Vaccinations
 -- Shows Percentage of Population that has recieved at least one Covid Vaccine
+SELECT dae.continent, dae.location,dae.date, dae.population, vac.new_vaccinations
+FROM Covid19..CovidDeath dae
+JOIN Covid19..CovidVaccinations vac
+	ON dae.location = vac.location
+	AND dae.date = vac.date
+WHERE dae.continent is not null
+ORDER BY 2,3
