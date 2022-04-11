@@ -30,3 +30,10 @@ SELECT location, population, MAX(total_cases) AS HighestInfectionCount,  MAX((to
 FROM Covid19..CovidDeath
 GROUP BY location, population
 ORDER BY 4 DESC
+
+-- Which Countries have the highest death compared to population 
+SELECT location, population, MAX(CAST(total_deaths AS int)) AS HighestDeathCount,  MAX(CAST(total_deaths AS int)/population)*100 AS PrecentagePopulationDeath
+FROM Covid19..CovidDeath
+WHERE continent is not null
+GROUP BY location, population
+ORDER BY 4 DESC
